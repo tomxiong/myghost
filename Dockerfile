@@ -25,9 +25,9 @@ RUN apt-get update && \
 # Install Node.js 
 RUN \
   cd /tmp && \
-  wget http://nodejs.org/dist/v0.10.26/node-v0.10.26-linux-x86.tar.gz && \
-  tar xvzf node-v0.10.26-linux-x86.tar.gz && \
-  rm -f node-v0.10.26-linux-x86.tar.gz && \
+  wget http://nodejs.org/dist/v0.10.26/node-v0.10.26.tar.gz && \
+  tar xvzf node-v0.10.26.tar.gz && \
+  rm -f node-v0.10.26.tar.gz && \
   cd node-v* && \
   ./configure && \
   CXX="g++ -Wno-unused-local-typedefs" make && \
