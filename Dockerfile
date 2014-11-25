@@ -2,7 +2,7 @@
 # sure you lock down to a specific version, not to `latest`!
 # See https://github.com/phusion/baseimage-docker/blob/master/Changelog.md for
 # a list of version numbers.
-FROM phusion/passenger-nodejs:latest
+FROM phusion/baseimage:latest
 
 # Set correct environment variables.
 ENV HOME /root
@@ -16,11 +16,25 @@ RUN /etc/my_init.d/00_regen_ssh_host_keys.sh
 CMD ["/sbin/my_init"]
 
 # ...put your own build instructions here...
-# Prepare install environment of Ghost
+# Prepare install environment
 RUN apt-get update && \
     apt-get install wget && \
 	apt-get install unzip && \
 	apt-get -y install python 
+	
+# Install Node.js 
+RUN \
+  cd /tmp && \
+  wget http://nodejs.org/dist/v0.10.26/node-v0.10.26-linux-x86.tar.gz && \
+  tar xvzf node-v0.10.26-linux-x86.tar.gz && \
+  rm -f node-v0.10.26-linux-x86.tar.gz && \
+  cd node-v* && \
+  ./configure && \
+  CXX="g++ -Wno-unused-local-typedefs" make && \
+  CXX="g++ -Wno-unused-local-typedefs" make install && \
+  cd /tmp && \
+  rm -rf /tmp/node-v* && \
+  echo '\n# Node.js\nexport PATH="node_modules/.bin:$PATH"' >> /root/.bashrc	
 	
 # Install Ghost
 RUN \
